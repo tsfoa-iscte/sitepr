@@ -15,4 +15,7 @@ urlpatterns = [
         name='voto'),
     path('criarquestao', views.criarquestao, name='criarquestao'),
     path('sendquest', views.sendquest, name='sendquest'),
+    path('<int:questao_id>/novaopcao',views.criaropcao, name='criaropcao'),
+    path('<int:questao_id>/novaopcao', views.novaopcao, name= 'novaopcao'),
+    path('votacao/opcaocriada', views.opcriada, name='opcaocriada')
 ]

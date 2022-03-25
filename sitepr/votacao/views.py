@@ -50,4 +50,22 @@ def sendquest(request):
         q.save()
     return render(request, 'votacao/qcriada.html', {'questao':questao})
 
+def criaropcao(request, questao_id):
+    questao = get_object_or_404(Questao, pk=questao_id)
+    return render(request ,'votacao/novaopcao.html', {'questao': questao})
+
+def novaopcao(request,questao_id):
+    if request.method == 'POST':
+        opcao = request.POST["opcao"]
+        newopcao=Opcao(questao=questao_id , opcao_texto=str(opcao))
+        print(opcao)
+        print(questao_id)
+        newopcao.save()
+       # return render(request ,'/votacao/novaopcao.html' , {'newopcao':newopcao})
+        return render(request, 'votacao/opcaocriada.html', {'opcao' : opcao})
+
+def opcriada(request):
+    return render(request, 'votacao/opcaocriada.html')
+
+
 
