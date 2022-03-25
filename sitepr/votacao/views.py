@@ -48,6 +48,6 @@ def sendquest(request):
         questao = request.POST["questao"]
         q= Questao(questao_texto=str(questao), pub_data=datetime.now())
         q.save()
-    return render(request, 'votacao/qcriada', {'questao':questao})
+    return render(request, 'votacao/qcriada.html', {'questao':questao})
 
 
