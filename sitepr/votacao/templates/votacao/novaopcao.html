@@ -2,14 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Criar nova opção para a questão:{{ questao.questao_texto }} </title>
 </head>
 <body>
+    <h1>
+        Criar nova opção para a questão:"{{ questao.questao_texto }}"
+    </h1>
         <form action="novaopcao" method="post">
             {% csrf_token %}
             <label>Opção:</label>
             <input type="text" name="opcao" id="opcao" value="" />
-            <input type="submit" value="submit" />
+            <input type="Submit" value="submit" />
         </form>
 </body>
 </html>

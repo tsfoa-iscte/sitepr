@@ -6,11 +6,6 @@ from django.template import loader
 from django.urls import reverse
 from .models import Questao, Opcao
 
-
-def index(request):
-    return HttpResponse("Viva DIAM. Esta e a pagina de entrada da app votacao.")
-
-
 def index(request):
     latest_question_list = Questao.objects.order_by('-pub_data')[:5]
     context = {'latest_question_list':latest_question_list}
@@ -48,7 +43,7 @@ def sendquest(request):
         questao = request.POST["questao"]
         q= Questao(questao_texto=str(questao), pub_data=datetime.now())
         q.save()
-    return render(request, 'votacao/qcriada.html', {'questao':questao})
+        return HttpResponseRedirect(reverse('votacao:index'))
 
 def criaropcao(request, questao_id):
     questao = get_object_or_404(Questao, pk=questao_id)
@@ -57,15 +52,11 @@ def criaropcao(request, questao_id):
 def novaopcao(request,questao_id):
     if request.method == 'POST':
         opcao = request.POST["opcao"]
-        newopcao=Opcao(questao=questao_id , opcao_texto=str(opcao))
-        print(opcao)
-        print(questao_id)
+        questao = get_object_or_404(Questao, pk=questao_id)
+        newopcao=Opcao(questao=questao , opcao_texto=str(opcao))
         newopcao.save()
-       # return render(request ,'/votacao/novaopcao.html' , {'newopcao':newopcao})
-        return render(request, 'votacao/opcaocriada.html', {'opcao' : opcao})
+        return HttpResponseRedirect(reverse('votacao:detalhe', args=(questao.id,)))
 
-def opcriada(request):
-    return render(request, 'votacao/opcaocriada.html')
 
 
 
