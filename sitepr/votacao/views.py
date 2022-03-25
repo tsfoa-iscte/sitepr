@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.shortcuts import get_object_or_404, render
 from django.http import Http404, HttpResponse,HttpResponseRedirect
 from django.template import loader
@@ -43,8 +45,9 @@ def criarquestao(request):
 
 def sendquest(request):
     if request.method == 'POST':
-        questao= request.POST["questao"]
-
-    return render(request, 'votacao',{'questao':questao})
+        questao = request.POST["questao"]
+        q= Questao(questao_texto=str(questao), pub_data=datetime.now())
+        q.save()
+    return render(request, 'votacao/qcriada', {'questao':questao})
 
 
