@@ -42,4 +42,9 @@ def criarquestao(request):
     return render(request, 'votacao/criarquestao.html')
 
 def sendquest(request):
-    return render(request, 'votacao/criarquestao.html')
+    if request.method == 'POST':
+        questao= request.POST["questao"]
+
+    return render(request, 'votacao',{'questao':questao})
+
+
