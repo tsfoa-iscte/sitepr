@@ -22,5 +22,5 @@ class Opcao(models.Model):
         return self.opcao_texto
 
 class Aluno(models.Model):
-    user = models.OneToOneField(User,on_delete=models.CASCADE )
+    user = models.OneToOneField(User , on_delete=models.CASCADE )
     curso = models.CharField(max_length=100)

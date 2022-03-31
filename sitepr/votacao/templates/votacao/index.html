@@ -24,10 +24,16 @@
 {% else %}
 <p>Nao ha questoes disponiveis.</p>
 {% endif %}
-
 <h1>Login:</h1>
-<p>Username:</p>
-<p>Password:</p>
-<a href="">login</a>
+<form action="login" method="post">
+            {% csrf_token %}
+            <label>Username:</label>
+            <input type="text" name="username" id="username" value="" /> <br>
+            <label>Password:</label>
+            <input type="password" name="pass" id="pass" value="" />
+            <input type="Submit" value="login" />
+        </form>
+<a href="registar">registar</a>
+
 </body>
 </html>

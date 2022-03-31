@@ -29,4 +29,5 @@ class Migration(migrations.Migration):
                 ('questao', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='votacao.questao')),
             ],
         ),
+
     ]

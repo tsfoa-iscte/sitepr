@@ -18,4 +18,7 @@ urlpatterns = [
     path('<int:questao_id>/criaropcao',views.criaropcao, name='criaropcao'),
     path('<int:questao_id>/novaopcao', views.novaopcao, name= 'novaopcao'),
     #path('votacao/opcaocriada', views.opcriada, name='opcaocriada')
+    path('registar',views.registar,name='registar'),
+    path('registo',views.registo,name='registo'),
+    path('usercriado',views.usercriado, name='usercriado')
 ]
