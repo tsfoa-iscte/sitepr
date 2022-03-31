@@ -66,9 +66,9 @@ def loginview(request):
     user = authenticate(username=username, password=password)
     if user is not None:
         login(request, user)
-        return render(request, 'votacao.html' )
+        return render(request, 'votacao/index.html' )
     else:
-        return render(request, 'votacao.html')
+        return render(request, 'votacao/index.html')
 
 
 def registar(request):
@@ -83,7 +83,7 @@ def registo(request):
     user.save()
     aluno =Aluno(user=user, curso=curso)
     aluno.save()
-    login(username, password)
+    #login(username, password)
     return render(request, 'votacao/usercriado.html')
    # return HttpResponseRedirect(reverse('votacao', args=(aluno,)))
 

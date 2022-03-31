@@ -20,5 +20,6 @@ urlpatterns = [
     #path('votacao/opcaocriada', views.opcriada, name='opcaocriada')
     path('registar',views.registar,name='registar'),
     path('registo',views.registo,name='registo'),
-    path('usercriado',views.usercriado, name='usercriado')
+    path('loginview',views.loginview,name='loginview')
+
 ]
