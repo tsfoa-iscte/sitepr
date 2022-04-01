@@ -13,7 +13,19 @@ value="{{ opcao.id }}" />
 </label>
 <br />
 {% endfor %}
-<input type="submit" value="Voto" />
+    {% if request.user.is_authenticated %}
+<input type="submit" value="Voto" /> <br>
+    {% else %}
+    <h1>Não está logado</h1>
+    {%endif%}
+    {% if request.user.is_superuser  %}
+    <input type="submit" value="Apagar esta Opção" formaction="{% url 'votacao:deleteopcao' questao.id %}"/>
+    {%endif%}
 </form>
+    {% if request.user.is_superuser  %}
+<a href="{% url 'votacao:criaropcao' questao.id %}"> nova opção</a><br>
+<a href="{% url 'votacao:deletequestao' questao.id %}">apagar questao</a>
+    {%endif%}
 
-<a href="{% url 'votacao:criaropcao' questao.id %}"> nova opção</a>
+<a href="/votacao">voltar</a>
+

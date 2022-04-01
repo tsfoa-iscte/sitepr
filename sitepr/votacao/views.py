@@ -7,6 +7,7 @@ from django.urls import reverse
 from .models import Questao, Opcao, Aluno
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
+from django.contrib.auth import logout
 
 
 def index(request):
@@ -59,6 +60,20 @@ def novaopcao(request,questao_id):
         newopcao=Opcao(questao=questao , opcao_texto=str(opcao))
         newopcao.save()
         return HttpResponseRedirect(reverse('votacao:detalhe', args=(questao.id,)))
+def deletequestao(request, questao_id):
+    questao = Questao.objects.get(id=questao_id)
+    questao.delete()
+    return HttpResponseRedirect(reverse('votacao:index'))
+def deleteopcao(request, questao_id):
+    questao = get_object_or_404(Questao, pk=questao_id)
+    try:
+        opcao_seleccionada = questao.opcao_set.get(pk=request.POST['opcao'])
+    except (KeyError, Opcao.DoesNotExist):
+        return render(request, 'votacao/detalhe.html',
+                      {'questao': questao, 'error_message': "Não escolheu uma opção", })
+    else:
+        opcao_seleccionada.delete()
+    return HttpResponseRedirect(reverse('votacao:detalhe', args=(questao.id,)))
 
 def loginview(request):
     username = request.POST['username']
@@ -66,7 +81,7 @@ def loginview(request):
     user = authenticate(username=username, password=password)
     if user is not None:
         login(request, user)
-        return render(request, 'votacao/index.html' )
+        return HttpResponseRedirect(reverse('votacao:index',))
     else:
         return render(request, 'votacao/index.html')
 
@@ -86,4 +101,11 @@ def registo(request):
     #login(username, password)
     return render(request, 'votacao/usercriado.html')
    # return HttpResponseRedirect(reverse('votacao', args=(aluno,)))
+
+def logoutview(request):
+    logout(request)
+    return HttpResponseRedirect(reverse('votacao:index', ))
+
+def perfil(request):
+    return render(request, 'votacao/perfil.html')
 
