@@ -7,4 +7,5 @@ voto{{ opcao.votos|pluralize }}</li>
 {% endfor %}
 </ul>
 <a href="{% url 'votacao:detalhe' questao.id %}">Votar
-novamente?</a>
+novamente?</a><br>
+<a href="/votacao">voltar</a>
