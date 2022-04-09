@@ -1,15 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "votacao/base.html" %}
+{% block sidebar %}
     <h1>
         Nova questão:
     </h1>
 
-<form action="sendquest" method="post">
+<form action="criarquestao" method="post">
 {% csrf_token %}
 <label>
 Questão:
@@ -20,5 +15,4 @@ Questão:
 
 </form>
 <a href="/votacao">voltar</a>
-</body>
-</html>
+{%endblock%}

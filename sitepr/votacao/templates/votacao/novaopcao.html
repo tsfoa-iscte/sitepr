@@ -1,11 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-</head>
-<body>
+{% extends "votacao/base.html" %}
+{% block sidebar %}
     <h1>
-        Criar nova opção para a questão:"{{ questao.questao_texto }}"
+        Criar nova opção para a questão:{{ questao.questao_texto }}
     </h1>
         <form action="novaopcao" method="post">
             {% csrf_token %}
@@ -13,6 +9,5 @@
             <input type="text" name="opcao" id="opcao" value="" />
             <input type="Submit" value="submit" />
         </form>
-</body>
 <a href="/votacao">voltar</a>
-</html>
+{%endblock%}

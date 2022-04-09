@@ -1,14 +1,18 @@
 from datetime import datetime
-
+from django.contrib.auth.decorators import user_passes_test
+from django.core.files.storage import FileSystemStorage
 from django.shortcuts import get_object_or_404, render
 from django.http import Http404, HttpResponse,HttpResponseRedirect
 from django.template import loader
+
 from django.urls import reverse
 from .models import Questao, Opcao, Aluno
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.contrib.auth import logout
 
+def email_check(user):
+    return user.email.endswith('@iscte-iul.pt')
 
 def index(request):
     latest_question_list = Questao.objects.order_by('-pub_data')[:5]
@@ -40,16 +44,21 @@ def voto(request, questao_id):
     return HttpResponseRedirect(reverse('votacao:resultados', args=(questao.id,)))
 
 def criarquestao(request):
-    return render(request, 'votacao/criarquestao.html')
-
-def sendquest(request):
     if request.method == 'POST':
-        questao = request.POST["questao"]
-        q= Questao(questao_texto=str(questao), pub_data=datetime.now())
-        q.save()
-        return HttpResponseRedirect(reverse('votacao:index'))
+        try:
+            questao = request.POST["questao"]
+        except KeyError:
+            return render(request,'votacao/criarquestao.html')
+        if questao:
+            q = Questao(questao_texto = str(questao), pub_data=datetime.now())
+            q.save()
+            return HttpResponseRedirect(reverse('votacao:index'))
+        else:
+            return HttpResponseRedirect(reverse('votacao:index'))
+    else:
+        return render(request,'votacao/criarquestao.html')
 
-def criaropcao(request, questao_id):
+"""def criaropcao(request, questao_id):
     questao = get_object_or_404(Questao, pk=questao_id)
     return render(request ,'votacao/novaopcao.html', {'questao': questao})
 
@@ -59,7 +68,24 @@ def novaopcao(request,questao_id):
         questao = get_object_or_404(Questao, pk=questao_id)
         newopcao=Opcao(questao=questao , opcao_texto=str(opcao))
         newopcao.save()
-        return HttpResponseRedirect(reverse('votacao:detalhe', args=(questao.id,)))
+        return HttpResponseRedirect(reverse('votacao:detalhe', args=(questao.id,)))"""
+
+def novaopcao(request,questao_id):
+    questao = get_object_or_404(Questao, pk=questao_id)
+    if request.method == 'POST':
+        try:
+            opcao = request.POST["opcao"]
+        except KeyError:
+            return render(request, 'votacao/novaopcao.html', {'questao': questao})
+        if opcao:
+            newopcao = Opcao(questao=questao, opcao_texto=str(opcao))
+            newopcao.save()
+            return HttpResponseRedirect(reverse('votacao:detalhe', args=(questao.id,)))
+        else:
+            return HttpResponseRedirect(reverse('votacao:detalhe', args=(questao.id,)))
+    else:
+        return render(request, 'votacao/novaopcao.html', {'questao': questao})
+
 def deletequestao(request, questao_id):
     questao = Questao.objects.get(id=questao_id)
     questao.delete()
@@ -89,6 +115,7 @@ def loginview(request):
 def registar(request):
     return render(request, 'votacao/registar.html')
 
+@user_passes_test(email_check)
 def registo(request):
     username = request.POST['username']
     password = request.POST['pass']
@@ -96,11 +123,19 @@ def registo(request):
     curso = request.POST['curso']
     user= User.objects.create_user(username , email, password)
     user.save()
-    aluno =Aluno(user=user, curso=curso)
+
+    if bool(request.FILES.get('myfile',False)):
+        myfile = request.FILES['myfile']
+        fs = FileSystemStorage()
+        filename = fs.save(myfile.name, myfile)
+        uploaded_file_url = fs.url(filename)
+        file = uploaded_file_url[1:]
+        print(file)
+        aluno =Aluno(user=user, curso=curso, file=file)
+    else:
+        aluno = Aluno(user=user, curso=curso)
     aluno.save()
-    #login(username, password)
     return render(request, 'votacao/usercriado.html')
-   # return HttpResponseRedirect(reverse('votacao', args=(aluno,)))
 
 def logoutview(request):
     logout(request)

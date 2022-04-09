@@ -1,12 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Registo </title>
+    {% load static %}
+     <link rel="stylesheet" type="text/css" href="{% static 'votacao/style.css' %}" />
+      <title>
+     Pagina de Diam
+ </title>
+    <img src="https://www.iscte-iul.pt/assets/files/2020/11/20/1605875888912_rgb_iscte_pt_horizontal_positive__2_.png" width="500" height="100" class="image">
 </head>
 <body>
-<h1>Novo Utilizador:</h1>
-<form action="registo" method="post">
+    {% load static %}
+    <div class ="registo">
+        <h1>Novo Utilizador:</h1>
+        <form method="post" enctype="multipart/form-data" action="registo">
             {% csrf_token %}
             <label>Username:</label>
             <input type="text" name="username" id="username" value="" /> <br>
@@ -16,8 +21,11 @@
             <input type="text" name="email" id="email" value="" /><br>
             <label>Curso:</label>
             <input type="text" name="curso" id="curso" value="" /><br>
-            <input type="Submit" value="registar" />
+            <label>Foto de perfil:</label>
+            <input type="file" name="myfile"><br>
+            <input type="Submit" value="Registar" />
         </form>
-<a href="/votacao">voltar</a>
+        <a href="/votacao">voltar</a>
+    </div>
 </body>
 </html>

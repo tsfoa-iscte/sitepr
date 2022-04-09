@@ -1,0 +1,17 @@
+body {
+background-color: #FFCC66;
+}
+.login{
+ text-align: center;
+}
+.registo{
+ text-align: center;
+}
+.image{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 35%;
+}
+
+

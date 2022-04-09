@@ -2,7 +2,7 @@ from django.db import models
 from django.utils import timezone
 from six import string_types
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate
+
 
 import datetime
 class Questao(models.Model):
@@ -22,5 +22,8 @@ class Opcao(models.Model):
         return self.opcao_texto
 
 class Aluno(models.Model):
-    user = models.OneToOneField(User , on_delete=models.CASCADE )
+    user = models.OneToOneField(User , on_delete=models.CASCADE)
     curso = models.CharField(max_length=100)
+    file = models.CharField(max_length=1000, default='votacao/static/media/avatar.jpg')
+
+

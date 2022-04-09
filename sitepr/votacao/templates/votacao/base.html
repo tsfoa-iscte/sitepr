@@ -1,0 +1,40 @@
+<html>
+<head>
+ <title>
+     Pagina de Diam
+ </title>
+</head>
+<body>
+ <div id="sidebar">
+ <ul>
+ <img src="https://www.iscte-iul.pt/assets/files/2020/11/20/1605875888912_rgb_iscte_pt_horizontal_positive__2_.png" width="500" height="100" class="image">
+     {% load static %}
+     <link rel="stylesheet" type="text/css" href="{% static 'votacao/style.css' %}" />
+     {% if request.user.is_authenticated %}
+     <h1>Olá {{ request.user.username }}</h1>
+     <a href="perfil">Perfil</a><br>
+     <a href="logoutview">Logout</a>
+     <p>
+
+     </p>
+     {% else %}
+     <div class="login">
+    <h1>Login:</h1>
+    <form action="loginview" method="post">
+            {% csrf_token %}
+            <label>Username:</label>
+            <input type="text" name="username" id="username" value="" /> <br>
+            <label>Password:</label>
+            <input type="password" name="pass" id="pass" value="" />
+            <input type="Submit" value="Login" />
+        </form>
+    <a href="registar">Registar</a>
+     {%endif%}
+     </div>
+     {% block sidebar %}
+     {%endblock%}
+ </ul>
+ </div>
+
+</body>
+</html>

@@ -1,23 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Questões</title>
-</head>
-<body>
-
-
-{% if request.user.is_authenticated %}
-<h1>Olá {{ request.user.username }}</h1><br>
-<a href="perfil">perfil</a><br>
-{% else %}
-<h1>Não está logado</h1>
-{% endif %}
-
+{% extends "votacao/base.html" %}
+{% block sidebar %}
 {% if request.user.is_superuser  %}
 <a href="{% url 'votacao:criarquestao' %}">Criar nova questão</a>
 {%endif%}
-{% if latest_question_list %}
+
+{% if request.user.is_authenticated %}
+    {% if latest_question_list %}
 <ul>
     {% for questao in latest_question_list %}
     <li>
@@ -29,26 +17,8 @@
     {% endfor %}
 </ul>
 {% else %}
-<p>Nao ha questoes disponiveis.</p>
+<p>Nao há questoes disponiveis.</p>
 {% endif %}
-
-
-{% if request.user.is_authenticated %}
-<a href="logoutview">logout</a><br>
-{% else %}
-<h1>Login:</h1>
-<form action="loginview" method="post">
-            {% csrf_token %}
-            <label>Username:</label>
-            <input type="text" name="username" id="username" value="" /> <br>
-            <label>Password:</label>
-            <input type="password" name="pass" id="pass" value="" />
-            <input type="Submit" value="login" />
-        </form>
-<a href="registar">registar</a>
 {% endif %}
+{%endblock%}
 
-
-
-</body>
-</html>

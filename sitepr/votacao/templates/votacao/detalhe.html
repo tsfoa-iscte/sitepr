@@ -1,3 +1,5 @@
+{% extends "votacao/base.html" %}
+{% block sidebar %}
 <h1>{{ questao.questao_texto }}</h1>
 {% if error_message %}
 <p><strong>{{ error_message }}</strong></p>
@@ -23,9 +25,9 @@ value="{{ opcao.id }}" />
     {%endif%}
 </form>
     {% if request.user.is_superuser  %}
-<a href="{% url 'votacao:criaropcao' questao.id %}"> nova opção</a><br>
+<a href="{% url 'votacao:novaopcao' questao.id %}"> nova opção</a><br>
 <a href="{% url 'votacao:deletequestao' questao.id %}">apagar questao</a>
     {%endif%}
 
 <br><a href="/votacao">voltar</a>
-
+{%endblock%}

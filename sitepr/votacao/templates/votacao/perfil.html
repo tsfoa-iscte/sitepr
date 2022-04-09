@@ -1,20 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Perfil</title>
+    {% load static %}
+     <link rel="stylesheet" type="text/css" href="{% static 'votacao/style.css' %}" />
+      <title>
+     Pagina de Diam
+ </title>
+    <img src="https://www.iscte-iul.pt/assets/files/2020/11/20/1605875888912_rgb_iscte_pt_horizontal_positive__2_.png" width="500" height="100" class="image">
 </head>
+
 <body>
 <h1>Perfil</h1>
 {% if request.user.is_authenticated %}
 <h2>Username: {{ request.user.username }}</h2>
 <h2>Curso: {{ request.user.aluno.curso }} </h2>
-<h2>email: {{ request.user.email }}</h2>
-
-{% else %}
-<h1>Não está logado</h1>
+<h2>Email: {{ request.user.email }}</h2>
+<h2>Fotografia de perfil:</h2> <img src=" {{request.user.aluno.file}} " width="250" height="250">
 {% endif %}
 <a href="/votacao">voltar</a>
-
-</body>
-</html>
+</body></html>
