@@ -1,10 +1,9 @@
 from datetime import datetime
-from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.decorators import user_passes_test, login_required
 from django.core.files.storage import FileSystemStorage
 from django.shortcuts import get_object_or_404, render
 from django.http import Http404, HttpResponse,HttpResponseRedirect
 from django.template import loader
-
 from django.urls import reverse
 from .models import Questao, Opcao, Aluno
 from django.contrib.auth import authenticate, login
@@ -18,6 +17,16 @@ def index(request):
     latest_question_list = Questao.objects.order_by('-pub_data')[:5]
     context = {'latest_question_list':latest_question_list}
     return render(request, 'votacao/index.html',context)
+
+def login_check(request):
+    username = request.POST['username']
+    password = request.POST['pass']
+    user = authenticate(username=username, password=password)
+    if user is not None:
+        login(request, user)
+        return HttpResponseRedirect(reverse('votacao:index',))
+    else:
+        return render(request, 'votacao/index.html')
 
 def detalhe(request, questao_id):
     questao = get_object_or_404(Questao, pk=questao_id)
@@ -43,12 +52,13 @@ def voto(request, questao_id):
         # voltar para a página web anterior.
     return HttpResponseRedirect(reverse('votacao:resultados', args=(questao.id,)))
 
+@login_required(login_url='/votacao/')
 def criarquestao(request):
     if request.method == 'POST':
         try:
             questao = request.POST["questao"]
         except KeyError:
-            return render(request,'votacao/criarquestao.html')
+            HttpResponseRedirect(reverse('votacao:index'))
         if questao:
             q = Questao(questao_texto = str(questao), pub_data=datetime.now())
             q.save()
@@ -61,7 +71,7 @@ def criarquestao(request):
 """def criaropcao(request, questao_id):
     questao = get_object_or_404(Questao, pk=questao_id)
     return render(request ,'votacao/novaopcao.html', {'questao': questao})
-
+, login_url='/votacao/registo_invalido/'
 def novaopcao(request,questao_id):
     if request.method == 'POST':
         opcao = request.POST["opcao"]
@@ -70,6 +80,7 @@ def novaopcao(request,questao_id):
         newopcao.save()
         return HttpResponseRedirect(reverse('votacao:detalhe', args=(questao.id,)))"""
 
+@login_required(login_url='/votacao/')
 def novaopcao(request,questao_id):
     questao = get_object_or_404(Questao, pk=questao_id)
     if request.method == 'POST':
@@ -86,10 +97,13 @@ def novaopcao(request,questao_id):
     else:
         return render(request, 'votacao/novaopcao.html', {'questao': questao})
 
+@login_required(login_url='/votacao/')
 def deletequestao(request, questao_id):
     questao = Questao.objects.get(id=questao_id)
     questao.delete()
     return HttpResponseRedirect(reverse('votacao:index'))
+
+@login_required(login_url='/votacao/')
 def deleteopcao(request, questao_id):
     questao = get_object_or_404(Questao, pk=questao_id)
     try:
@@ -115,7 +129,6 @@ def loginview(request):
 def registar(request):
     return render(request, 'votacao/registar.html')
 
-@user_passes_test(email_check)
 def registo(request):
     username = request.POST['username']
     password = request.POST['pass']
@@ -141,6 +154,7 @@ def logoutview(request):
     logout(request)
     return HttpResponseRedirect(reverse('votacao:index', ))
 
+@login_required(login_url='/votacao/')
 def perfil(request):
     return render(request, 'votacao/perfil.html')
 
