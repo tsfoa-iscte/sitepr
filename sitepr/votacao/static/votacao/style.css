@@ -13,5 +13,27 @@ background-color: #FFCC66;
   margin-right: auto;
   width: 35%;
 }
+h1{
+    font-family: Arial;
+    font-size: xx-large;
+}
 
+a{
+    font-family: Arial;
+    font-size: 20px;
+    color: black;
+}
+a:hover { color: #f8a100; }
 
+.voltar{
+    color: black;
+    font-size: 15px;
+    font-family: Bahnschrift;
+}
+voltar:hover { color: #f8a100; }
+
+.questao{
+    text-align: center;
+    font-family: "Book Antiqua";
+
+}

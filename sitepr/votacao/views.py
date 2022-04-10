@@ -9,6 +9,7 @@ from .models import Questao, Opcao, Aluno
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.contrib.auth import logout
+from django.contrib.auth.decorators import permission_required
 
 def email_check(user):
     return user.email.endswith('@iscte-iul.pt')
@@ -52,7 +53,8 @@ def voto(request, questao_id):
         # voltar para a página web anterior.
     return HttpResponseRedirect(reverse('votacao:resultados', args=(questao.id,)))
 
-@login_required(login_url='/votacao/')
+
+@permission_required('votacao.criarquestao',login_url='/votacao/')
 def criarquestao(request):
     if request.method == 'POST':
         try:
@@ -80,7 +82,7 @@ def novaopcao(request,questao_id):
         newopcao.save()
         return HttpResponseRedirect(reverse('votacao:detalhe', args=(questao.id,)))"""
 
-@login_required(login_url='/votacao/')
+@permission_required('votacao.novaopcao',login_url='/votacao/')
 def novaopcao(request,questao_id):
     questao = get_object_or_404(Questao, pk=questao_id)
     if request.method == 'POST':

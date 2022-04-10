@@ -10,5 +10,5 @@ voto{{ opcao.votos|pluralize }}</li>
 </ul>
 <a href="{% url 'votacao:detalhe' questao.id %}">Votar
 novamente?</a><br>
-<a href="/votacao">voltar</a>
+<a class="voltar" href="/votacao">voltar</a>
 {%endblock%}
