@@ -3,6 +3,7 @@
  <title>
      Pagina de Diam
  </title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 <body>
  <div id="sidebar">
@@ -11,11 +12,14 @@
      {% load static %}
      <link rel="stylesheet" type="text/css" href="{% static 'votacao/style.css' %}" />
      {% if request.user.is_authenticated %}
-     <h1>Olá {{ request.user.username }}</h1>
+     <h1 onclick="showImage();" >Olá {{ request.user.username }}</h1>
      <a href="perfil">Perfil</a><br>
      <a href="logoutview">Logout</a>
      <p>
-
+         <script type="text/javascript" > function showImage(){
+        document.getElementById('loadingImage').style.visibility='visible';
+    }
+         </script>
      </p>
      {% else %}
      <div class="login">

@@ -5,8 +5,15 @@
 {%endif%}
 
 {% if request.user.is_authenticated %}
+<img id="loadingImage" style="visibility: hidden" src=" {{request.user.aluno.file}} " width="250" height="250" ondblclick="hideImage()" ><br>
+
+<script type="text/javascript">
+    function hideImage() {
+    document.getElementById('loadingImage').style.visibility='hidden';
+    }
+</script>
     {% if latest_question_list %}
-<ul>
+<ul style="visibility: hidden" id="questoes">
     {% for questao in latest_question_list %}
     <li>
         <a href="{% url 'votacao:detalhe' questao.id %}">
@@ -20,5 +27,20 @@
 <p>Nao há questoes disponiveis.</p>
 {% endif %}
 {% endif %}
+
+<button id="butao" onclick="mostrar()" >Mostrar lista de Questões</button>
+<script>
+function mostrar(){
+
+if (document.getElementById('questoes').style.visibility == 'hidden'){
+    document.getElementById('butao').innerText='Esconder lista de Questões';
+    document.getElementById('questoes').style.visibility='visible';
+}else{
+    document.getElementById('butao').innerText='Mostrar lista de Questões';
+    document.getElementById('questoes').style.visibility='hidden';
+}
+}
+
+</script>
 {%endblock%}
 
